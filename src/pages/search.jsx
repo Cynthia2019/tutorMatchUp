@@ -2,22 +2,33 @@ import React from 'react';
 import Header from '../components/header'
 import './search.css'
 import InputGroup from 'react-bootstrap/InputGroup'
+import axios from 'axios'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import InfoCard from '../components/infoCard'
-import * as Constants from '../components/Constants'
 
-const infos = Constants.infos
+const config = {
+    headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'applicaiton/json'
+    }
+}
+
 
 export default class SearchPage extends React.Component {
     constructor(){
         super()
         this.state = {
-            infos: []
+            infos: null
         }
     }
+    async getTutorFromDB() {
+        await axios.get('http://localhost:5000/tutors/all', config)
+        .then(res=>{this.setState({infos: res.data})})
+        .catch(err=>alert(err))
+    }
     componentDidMount = () => {
-        this.setState({infos: infos})
+        this.getTutorFromDB()
     }
     render() {
         return(
@@ -29,13 +40,14 @@ export default class SearchPage extends React.Component {
                         <InputGroup.Append><Button variant="success">Search</Button></InputGroup.Append>
                     </InputGroup>
                 </div>
-                {infos.map((info, i) => {
+                {console.log(this.state.infos, "infos")}
+                {this.state.infos?this.state.infos.map((info, i) => {
                     return(
                         <div key={`infoCard-${i}`}>
                             <InfoCard tutor={info}/>
                         </div>
                     )
-                })}
+                }):<div>Loading...</div>}
             </div>
         )
     }

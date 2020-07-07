@@ -27,19 +27,19 @@ export default class infoCard extends React.Component {
                     <Card className='info-card'
                     style={{width:"70%", boxShadow:"4px 4px 4px 0 rgba(0,0,0,0.15)", margin:'10px 5px'}}>
                         <Card.Body>
-                            <Card.Title>{tutor.name}</Card.Title>
-                            <Card.Text>class: {tutor.class}</Card.Text>
+                            <Card.Title>{tutor.firstName} {tutor.lastName}</Card.Title>
+                            <Card.Text>class: {tutor.currentClass}</Card.Text>
                             <Button variant="outline-info" onClick={this.handleShow}>Read More</Button>
                             <Modal show={this.state.show} onHide={this.handleClose} centered>
                                 <Modal.Header closeButton>
-                                    <Modal.Title>{tutor.name}</Modal.Title>
+                                <Modal.Title>{tutor.firstName} {tutor.lastName}</Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body>
-                                    <p>GPA: {tutor.GPA}</p>
-                                    <p>classes offered: {tutor.tutoring}</p>
+                                    <p>GPA: {tutor.gpa}</p>
+                                    <p>classes offered: {tutor.subject}</p>
                                     <p>contacts: 
-                                        Email: {tutor.contactInfo.email}
-                                        Phone: {tutor.contactInfo.phone}
+                                        <div style={{marginLeft:'20px'}}>Email: {tutor.email}</div>
+                                        <div style={{marginLeft:'20px'}}>Phone: {tutor.phone}</div>
                                     </p>
                                 </Modal.Body>
                             </Modal>
