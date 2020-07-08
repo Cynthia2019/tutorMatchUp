@@ -1,0 +1,14 @@
+.profile-key > ul > li, 
+.profile-value > ul > li {
+    margin: 20px 0;
+    font-size: 20px
+}
+.profile-key > ul > li > input, 
+.profile-value > ul > li > input
+{
+    box-shadow: 3px 3px 5px 2px rgba(0,0,0,0.15);
+    text-indent: 5px;
+    border-radius: 10px;
+    border: none;
+    
+}

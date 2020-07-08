@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import SearchPage from './pages/search';
 import SignUpPage from './pages/signupPage'
 import LoginPage from './pages/loginPage'
+import ProfilePage from './pages/profile'
 import { BrowserRouter as Router, Route, Switch, withRouter } from 'react-router-dom'
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Route exact path='/' component={SearchPage}/>
         <Route exact path='/signup' component={SignUpPage}/>
         <Route exact path='/login' component={LoginPage}/>
+        <Route exact path='/profile' component={ProfilePage}/>
       </Switch>
     </div>
     </Router>

@@ -29,6 +29,7 @@ export default class infoCard extends React.Component {
                         <Card.Body>
                             <Card.Title>{tutor.firstName} {tutor.lastName}</Card.Title>
                             <Card.Text>class: {tutor.currentClass}</Card.Text>
+                            <Card.Text>subjects offered: {tutor.subject}</Card.Text>
                             <Button variant="outline-info" onClick={this.handleShow}>Read More</Button>
                             <Modal show={this.state.show} onHide={this.handleClose} centered>
                                 <Modal.Header closeButton>
@@ -36,11 +37,11 @@ export default class infoCard extends React.Component {
                                 </Modal.Header>
                                 <Modal.Body>
                                     <p>GPA: {tutor.gpa}</p>
-                                    <p>classes offered: {tutor.subject}</p>
-                                    <p>contacts: 
+                                    <p>subjects offered: {tutor.subject}</p>
+                                    <div>contacts: 
                                         <div style={{marginLeft:'20px'}}>Email: {tutor.email}</div>
                                         <div style={{marginLeft:'20px'}}>Phone: {tutor.phone}</div>
-                                    </p>
+                                    </div>
                                 </Modal.Body>
                             </Modal>
                         </Card.Body>
