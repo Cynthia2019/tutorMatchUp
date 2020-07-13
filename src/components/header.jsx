@@ -19,7 +19,7 @@ export default class Header extends React.Component {
     }
     async getUserFromDB () {
         await API.get('/',config)
-        .then(res=>{this.setState({user: true})})
+        .then(res=>{if(res.data && res.data.length !== 0){this.setState({user: true})}})
         .catch(err=>{if(err.code !== '404'){console.log(err)}})
     }
     componentDidMount=()=>{

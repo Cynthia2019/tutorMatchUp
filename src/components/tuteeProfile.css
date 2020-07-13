@@ -1,14 +1,37 @@
 .profile-key > ul > li, 
 .profile-value > ul > li {
     margin: 20px 0;
-    font-size: 20px
+    font-size: 20px;
+    min-height:20px
 }
-.profile-key > ul > li > input, 
 .profile-value > ul > li > input
 {
-    box-shadow: 3px 3px 5px 2px rgba(0,0,0,0.15);
     text-indent: 5px;
+    border-style: none;
+    border-bottom: 1px solid gray;
+    font-size: 18px;
+    min-height:18px
+}
+
+.tab-content {
+    box-shadow: 5px 5px 5px 5px rgba(0,0,0,0.15);
+    background-color: white;
+    border:none;
     border-radius: 10px;
-    border: none;
-    
+}
+.profile-value > ul > li > input:focus
+{
+    text-indent: 5px;
+    border-style: none;
+    border-bottom: 1px solid gray;
+    font-size: 18px;
+    outline: none;
+}
+
+.profile-content > nav > a {
+    color: black
+}
+.profile-content > nav > a:focus {
+    color: gray;
+    outline: none
 }

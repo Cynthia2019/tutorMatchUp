@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '../components/header'
 import './search.css'
 import InputGroup from 'react-bootstrap/InputGroup'
-import axios from 'axios'
+import API from '../utils/API'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import InfoCard from '../components/infoCard'
@@ -26,7 +26,7 @@ export default class SearchPage extends React.Component {
         }
     }
     async getTutorFromDB() {
-        await axios.get('http://localhost:5000/tutors/all', config)
+        await API.get('/tutors/all', config)
         .then(res=>{
             this.setState({infos: res.data})
             var arr = []
@@ -52,7 +52,6 @@ export default class SearchPage extends React.Component {
             })
             return result
         })
-        console.log(newInfos, 'new')
         this.setState({filtered:newInfos})
     }
     render() {
@@ -66,7 +65,6 @@ export default class SearchPage extends React.Component {
                         <InputGroup.Append><Button variant="success">Search</Button></InputGroup.Append>
                     </InputGroup>
                 </div>
-                {console.log(this.state.filtered, "subject")}
                 {this.state.filtered?this.state.filtered.map((info, i) => {
                         return(
                             <div key={`infoCard-${i}`}>

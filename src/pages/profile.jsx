@@ -1,11 +1,16 @@
 import React from 'react';
 import Header from '../components/header'
 import TuteeProfile from '../components/tuteeProfile'
-import axios from 'axios'
+import TutorProfile from '../components/tutorProfile'
+import TimeSlotPicker from '../components/timeSlot'
+import API from '../utils/API'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Tabs from 'react-bootstrap/Tabs'
+import Tab from 'react-bootstrap/Tab'
+import defaultAvatar from '../img/default-user-icon-8.jpg'
 
 const config = {
     headers: {
@@ -19,14 +24,15 @@ export default class ProfilePage extends React.Component {
     constructor(){
         super()
         this.state = {
-            info: null
+            info: null,
+            key: 'tutor-profile'
         }
     }
     componentDidMount=()=>{
         this.getInfoFromDB()
     }
     async getInfoFromDB() {
-        await axios.get('http://localhost:5000/',config)
+        await API.get('/',config)
         .then(res=>{
             this.setState({info:res.data}
                 )
@@ -34,14 +40,46 @@ export default class ProfilePage extends React.Component {
         .catch(err=>alert(err))
     }
     render(){
+        var basicInfo
         const info = this.state.info?this.state.info:null
+        if(info && info.tutee){
+            basicInfo = info.tutee
+        } else if (info && info.tutor){
+            basicInfo = info.tutor
+        } else {
+            basicInfo = null
+        }
         return(
             <div>
                 <Header />
                 {info===null?<h3>Loading infomation...</h3>:
-                <div style={{padding:'40px', textAlign:'left',backgroundColor:'rgba(230,230,230,0.5)'}} className='profile-content'>
-                    <TuteeProfile info={info}/>
-                </div>}
+                <Row>
+
+                    <Col className='sideber-right' md={3} style={{boxShadow:'5px 5px 15px 3px rgba(0,0,0,0.2)',display:'flex',flexDirection:'column',alignItems:'center'}}>
+                    <h1 style={{margin:'20px'}}>Profile</h1>
+                    <div className='Avatar' style={{backgroundImage:info.avatar?`url(${basicInfo.avatar})`:`url(${defaultAvatar})`, borderRadius:'50%',
+                     width:'200px', height:'200px', margin:'0 20%',backgroundSize:'contain',boxShadow:'5px 5px 15px 3px rgba(0,0,0,0.2)'}}></div>
+                    <div className='profile-name' style={{margin:'20px', fontSize:'30px'}}>{basicInfo.firstName} {basicInfo.lastName}</div>
+                    </Col>
+
+                    <Col md={9} className='profile-content' style={{padding:'40px', textAlign:'left',backgroundColor:'#b5c3cd'}} >
+                    <Tabs defaultActiveKey='tutor-profile' onSelect={(k)=>{this.setState({key:k})}}>
+                        <Tab title='As a Tutee' eventKey='tutee-profile'>
+                            <TuteeProfile info={info.tutee} />
+                        </Tab>
+                        <Tab title='As a Tutor' eventKey='tutor-profile'>
+                            <TutorProfile info={info.tutor}/>
+                        </Tab>
+                    </Tabs>
+                    {this.state.key==='tutor-profile'?
+                    <div className='schedule-time' style={{backgroundColor:'white', borderRadius:'25px', border:'none', boxShadow:'5px 5px 15px 3px rgba(0,0,0,0.2)', margin:'40px 0', padding:'30px'}}>
+                        <h3>This Week's Available Time Slots</h3>
+                        <TimeSlotPicker />
+                    </div>
+                    :<></>}
+                    </Col>
+                                    
+                </Row>}
             </div>
         )
     }
