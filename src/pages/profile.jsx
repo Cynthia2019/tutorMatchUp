@@ -11,6 +11,7 @@ import Col from 'react-bootstrap/Col'
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import defaultAvatar from '../img/default-user-icon-8.jpg'
+import { Switch, Redirect } from 'react-router-dom'
 
 const config = {
     headers: {
@@ -25,7 +26,8 @@ export default class ProfilePage extends React.Component {
         super()
         this.state = {
             info: null,
-            key: 'tutor-profile'
+            key: 'tutor-profile',
+            redirect: false
         }
     }
     componentDidMount=()=>{
@@ -34,10 +36,24 @@ export default class ProfilePage extends React.Component {
     async getInfoFromDB() {
         await API.get('/',config)
         .then(res=>{
-            this.setState({info:res.data}
-                )
+            if(res.data === null){
+                alert("Please Login First")
+                this.setRediret()
+            }
+            this.setState({info:res.data})
     console.log(res)})
         .catch(err=>alert(err))
+    }
+    setRediret = () => {
+        this.setState({redirect: true})
+    }
+    renderRedirect = () => {
+        if(this.state.redirect){
+            return(
+                <Switch>
+                    <Redirect from='/profile' to='/login'/>
+                </Switch>)
+        }
     }
     render(){
         var basicInfo
@@ -52,9 +68,8 @@ export default class ProfilePage extends React.Component {
         return(
             <div>
                 <Header />
-                {info===null?<h3>Loading infomation...</h3>:
+                {info===null?<div>{this.renderRedirect()}<h3>Loading infomation...</h3></div>:
                 <Row>
-
                     <Col className='sideber-right' md={3} style={{boxShadow:'5px 5px 15px 3px rgba(0,0,0,0.2)',display:'flex',flexDirection:'column',alignItems:'center'}}>
                     <h1 style={{margin:'20px'}}>Profile</h1>
                     <div className='Avatar' style={{backgroundImage:info.avatar?`url(${basicInfo.avatar})`:`url(${defaultAvatar})`, borderRadius:'50%',
@@ -74,7 +89,7 @@ export default class ProfilePage extends React.Component {
                     {this.state.key==='tutor-profile'?
                     <div className='schedule-time' style={{backgroundColor:'white', borderRadius:'25px', border:'none', boxShadow:'5px 5px 15px 3px rgba(0,0,0,0.2)', margin:'40px 0', padding:'30px'}}>
                         <h3>This Week's Available Time Slots</h3>
-                        <TimeSlotPicker />
+                        <TimeSlotPicker info={info.tutor}/>
                     </div>
                     :<></>}
                     </Col>

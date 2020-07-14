@@ -12,7 +12,8 @@ export default class TuteeProfile extends React.Component {
         this.gpa = React.createRef()
         this.phone = React.createRef()
         this.state = {
-            readOnly: true
+            readOnly: true,
+            info: null
         }
     }
     async editInfo () {
@@ -25,18 +26,31 @@ export default class TuteeProfile extends React.Component {
             this.currentClass.current.value = res.data.updatedClass
             this.setState({readOnly:true})
             alert("Changes Saved")
+            this.refreshPage()
         }).catch(err=>{alert(err)})
     }
     handleEdit = (e) => {
         e.preventDefault()
         this.setState({readOnly: false})
     }
+    async getTuteeInfo(){
+        await API.get(`/users/getOneUser/${this.props.info._id}`)
+        .then(res=>{console.log(res)
+        this.setState({info: res.data})})
+    }
+    componentDidMount = () => {
+        this.getTuteeInfo()
+    }
     hancdleSave = (e) => {
         e.preventDefault()
         this.editInfo()
     }
+    //refresh page when update info
+    refreshPage = () => {
+        window.location.reload()
+    }
     render(){
-        const info = this.props.info
+        const info = this.state.info
     return(
         <Row>
             <Col style={{display:'flex', alignItems:'center'}}>
@@ -50,13 +64,14 @@ export default class TuteeProfile extends React.Component {
                     </ul>
                 </Col>
                 <Col className='profile-value' xs={4}>
-                    <ul style={{listStyle:'none', }}>
+                    {info===null?<></>:
+                    <ul style={{listStyle:'none'}}>
                         <li>{info.email}</li>
                         <li>{info.studentID}</li>
                         <li><input type='text' label='class' placeholder={info.currentClass} readOnly={this.state.readOnly} ref={this.currentClass}/></li>
                         <li><input type='text' label='gpa' placeholder={info.gpa} readOnly={this.state.readOnly} ref={this.gpa}/></li>
                         <li><input type='text'label='phone' placeholder={info.phone} readOnly={this.state.readOnly} ref={this.phone}/></li>
-                    </ul>
+                    </ul>}
                 </Col>
                 <Col xs={4}>
                     {this.state.readOnly?<Button variant='outline-dark' onClick={this.handleEdit} style={{alignSelf:'flex-end', padding:'20px'}}>Edit</Button>:

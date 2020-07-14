@@ -1,17 +1,58 @@
-.add-slot > .dropdown > .btn{
+.add-slot > .dropright > button{
     background-color: white;
     border: none;
     box-shadow: 1px 1px 5px 2px rgba(0,0,0,0.25);
     color: gray;
     width: 80px;
-    height: 40px;
-    transition-property: width height;
-    transition-duration: 2s;
+    height: 30px;
+    transition-property: width, height;
+    transition-duration: 0.2s;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0
 }
-.add-slot > .dropdown > .btn:hover{
+.add-slot > .dropright > button:hover{
     background-color: white;
     border: none;
     box-shadow: 1px 1px 5px 2px rgba(0,0,0,0.25);
     width: 85px;
-    height: 45px;
+    height: 35px;
+}
+
+.add-slot > .dropright > .dropdown-toggle:focus {
+    outline: none;
+    background-color: white;
+    border: none;
+    box-shadow: 1px 1px 5px 2px rgba(0,0,0,0.25);
+    width: 85px;
+    height: 35px;
+}
+.add-slot > .dropright > button::after {
+    display: none;
+}
+.show>.btn-primary.dropdown-toggle {
+    background-color: white;
+    border: none;
+}
+.show>.btn-primary.dropdown-toggle:active {
+    box-shadow: 1px 1px 5px 2px rgba(0,0,0,0.25);
+}
+.show>.btn-primary.dropdown-toggle:focus {
+    box-shadow: 1px 1px 5px 2px rgba(0,0,0,0.25);
+}
+.available-slots > li {
+    list-style: none;
+    box-shadow: 1px 1px 5px 2px rgba(0,0,0,0.25);
+    border-radius: 5px;
+    padding: 5px;
+    margin: 10px 0;
+
+}
+.available-slots > li:hover {
+    list-style: none;
+    box-shadow: 1px 1px 5px 2px rgba(0,0,0,0.25);
+    border-radius: 5px;
+    padding: 5px;
+    margin: 10px 0;
+    cursor: pointer
 }
