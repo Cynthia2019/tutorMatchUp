@@ -11,6 +11,7 @@ import Col from 'react-bootstrap/Col'
 import Tabs from 'react-bootstrap/Tabs'
 import Tab from 'react-bootstrap/Tab'
 import defaultAvatar from '../img/default-user-icon-8.jpg'
+import getWeek from '../utils/time'
 import { Switch, Redirect } from 'react-router-dom'
 
 const config = {
@@ -27,11 +28,14 @@ export default class ProfilePage extends React.Component {
         this.state = {
             info: null,
             key: 'tutor-profile',
-            redirect: false
+            redirect: false,
+            week: null,
         }
     }
     componentDidMount=()=>{
         this.getInfoFromDB()
+        const time = getWeek()
+        this.setState({week:time})
     }
     async getInfoFromDB() {
         await API.get('/',config)
@@ -55,6 +59,7 @@ export default class ProfilePage extends React.Component {
                 </Switch>)
         }
     }
+
     render(){
         var basicInfo
         const info = this.state.info?this.state.info:null
@@ -88,7 +93,10 @@ export default class ProfilePage extends React.Component {
                     </Tabs>
                     {this.state.key==='tutor-profile'?
                     <div className='schedule-time' style={{backgroundColor:'white', borderRadius:'25px', border:'none', boxShadow:'5px 5px 15px 3px rgba(0,0,0,0.2)', margin:'40px 0', padding:'30px'}}>
-                        <h3>This Week's Available Time Slots</h3>
+                        <Row style={{justifyContent:'space-between',margin:0,padding:'0 20px'}}>
+                            <h3>This Week's Available Time Slots</h3>
+                            <p>week: {this.state.week}</p>
+                        </Row>
                         <TimeSlotPicker info={info.tutor}/>
                     </div>
                     :<></>}

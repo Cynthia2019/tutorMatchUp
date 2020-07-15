@@ -3,3 +3,16 @@
   font-style: normal;
   font-weight: 300;
 }
+.row {
+  margin: 0 !important
+}
+.disabled {
+  background-color: #999 !important;
+  cursor: initial !important
+}
+.shadow {
+  box-shadow: 1px 1px 3px 1px rgba(0,0,0,0.2) !important;
+  border:none !important;
+  background-color: white !important;
+  color:black !important
+}

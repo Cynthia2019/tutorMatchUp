@@ -8,7 +8,7 @@ import {PlusOutlined} from '@ant-design/icons'
 import './timeSlot.css'
 import { Dropdown } from 'react-bootstrap';
 
-const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+const days = ['Sun','Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 const slots = ['8:00-9:00', '9:00-10:00', '10:00-11:00', '11:00-12:00','12:00-13:00','13:00-14:00','14:00-15:00','15:00-16:00','16:00-17:00','17:00-18:00','18:00-19:00','19:00-20:00']
 const config = {
     headers: {
@@ -21,14 +21,16 @@ export default class TimeSlotPicker extends React.Component {
     constructor(props){
         super(props)
         this.state={
+            week: null,
+            today: 0,
             timeSlots: [
+                {day:"Sun", slot:[]},
                 {day:"Mon", slot:[]},
                 {day:"Tue", slot:[]},
                 {day:"Wed", slot:[]},
                 {day:"Thu", slot:[]},
                 {day:"Fri", slot:[]},
                 {day:"Sat", slot:[]},
-                {day:"Sun", slot:[]},
             ]
         }
     }
@@ -48,17 +50,15 @@ export default class TimeSlotPicker extends React.Component {
     }}
     async getTimeSlot(){
         await API.get(`/tutors/getOneTutor/${this.props.info._id}`,config)
-        .then(res=>{console.log(res)
-        this.setState({timeSlots: res.data.availableTime})})
+        .then(res=>{if(res.data.availableTime){this.setState({timeSlots: res.data.availableTime})}})
     }
     handleUpdate = () => {
         this.updateSchedule()
     }
     componentDidMount = () => {
-        // if(this.props.info.availableTime.length===7){
-        //     this.setState({timeSlots: this.props.info.availableTime})
-        // }
         this.getTimeSlot()
+        const now = new Date()
+        this.setState({today: now.getDay()})
     }
     handleSelect = (key) => {
         console.log(key)
@@ -81,12 +81,13 @@ export default class TimeSlotPicker extends React.Component {
         newTimeSlots[i].slot  = arr.filter(item=>{return(item !== ele)})
         this.setState({timeSlots: newTimeSlots})
     }
+    //get this week's date
+
     render(){
         return(
             <div className="slot-table" style={{display:'flex',flexDirection:'row',justifyContent:'space-around'}}>
                 {this.state.timeSlots.map((obj, i)=>{return(
                     <div className='add-slot' key={`add-slot-${i}`}>
-                        
                         <div className={`day-${i}`} style={{fontWeight:'bold'}} key={`day-${i}`}>{obj.day}</div>
                         <div className={`available-slots`}>{obj.slot.map((ele)=>{return(
                         <li key={`${obj.day}-${ele}`} onClick={()=>{this.handleSlotClick(ele, i)}}>{ele}</li>)
@@ -94,7 +95,7 @@ export default class TimeSlotPicker extends React.Component {
                         </div>
 
                         <Dropdown drop='right'onSelect={(key) =>this.handleSelect(key)}>
-                            <Dropdown.Toggle className='add-slot'>
+                            <Dropdown.Toggle className='add-slot' disabled={this.state.today>i?true:false}>
                                 <PlusOutlined style={{color:'gray'}}/>
                             </Dropdown.Toggle>
                             <Dropdown.Menu>
@@ -103,7 +104,7 @@ export default class TimeSlotPicker extends React.Component {
                         </Dropdown>
                     </div>
                 )})}
-            <Button onClick={this.handleUpdate} variant='outline-success'>Update</Button>
+            <Button onClick={this.handleUpdate} variant='outline-info' style={{alignSelf:'flex-start'}}>Update</Button>
             </div>
         )
     }
